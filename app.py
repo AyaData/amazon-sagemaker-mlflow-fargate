@@ -4,6 +4,7 @@
 from aws_cdk import (
     aws_ec2 as ec2,
     aws_s3 as s3,
+    aws_ecr_assets as ecr_assets,
     aws_ecs as ecs,
     aws_rds as rds,
     aws_iam as iam,
@@ -148,7 +149,9 @@ class MLflowStack(Stack):
 
         container = task_definition.add_container(
             id="Container",
-            image=ecs.ContainerImage.from_asset(directory="container"),
+            image=ecs.ContainerImage.from_asset(
+                directory="container", platform=ecr_assets.Platform.LINUX_AMD64
+            ),
             environment={
                 "BUCKET": f"s3://{artifact_bucket.bucket_name}",
                 "HOST": database.db_instance_endpoint_address,
