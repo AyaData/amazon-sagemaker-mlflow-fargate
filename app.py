@@ -109,6 +109,30 @@ class MLflowStack(Stack):
             peer=ec2.Peer.ipv4("10.0.0.0/24"), connection=ec2.Port.tcp(port)
         )
 
+        # database = rds.DatabaseInstance(
+        #     scope=self,
+        #     id="MYSQL",
+        #     database_name=db_name,
+        #     port=port,
+        #     credentials=rds.Credentials.from_username(
+        #         username=username, password=db_password_secret.secret_value
+        #     ),
+        #     engine=rds.DatabaseInstanceEngine.mysql(
+        #         version=rds.MysqlEngineVersion.VER_8_0_34
+        #     ),
+        #     instance_type=ec2.InstanceType.of(
+        #         ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.SMALL
+        #     ),
+        #     vpc=vpc,
+        #     security_groups=[sg_rds],
+        #     vpc_subnets=ec2.SubnetSelection(
+        #         subnet_type=ec2.SubnetType.PRIVATE_ISOLATED
+        #     ),
+        #     # multi_az=True,
+        #     removal_policy=RemovalPolicy.DESTROY,
+        #     deletion_protection=False,
+        # )
+
         database = rds.DatabaseInstance(
             scope=self,
             id="MYSQL",
@@ -121,7 +145,7 @@ class MLflowStack(Stack):
                 version=rds.MysqlEngineVersion.VER_8_0_34
             ),
             instance_type=ec2.InstanceType.of(
-                ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.SMALL
+                ec2.InstanceClass.BURSTABLE3, ec2.InstanceSize.SMALL
             ),
             vpc=vpc,
             security_groups=[sg_rds],
