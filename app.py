@@ -167,8 +167,8 @@ class MLflowStack(Stack):
             scope=self,
             id="MLflow",
             task_role=role,
-            cpu=4 * 1024,
-            memory_limit_mib=8 * 1024,
+            cpu=2048,
+            memory_limit_mib=4096
         )
 
         container = task_definition.add_container(
@@ -182,6 +182,7 @@ class MLflowStack(Stack):
                 "PORT": str(port),
                 "DATABASE": db_name,
                 "USERNAME": username,
+                "GUNICORN_CMD_ARGS": "--timeout 600 --workers 4",
             },
             secrets={"PASSWORD": ecs.Secret.from_secrets_manager(db_password_secret)},
             logging=ecs.LogDriver.aws_logs(stream_prefix="mlflow"),
